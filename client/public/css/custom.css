@@ -1,0 +1,15 @@
+.vheight-100{
+    min-height: 100vh;
+}
+
+.below-nav {
+    padding-top: 5rem;
+}
+
+.img-button:hover {
+    cursor: pointer;
+}
+
+.list-title {
+    font-weight: 500;
+}
