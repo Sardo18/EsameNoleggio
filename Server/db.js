@@ -1,6 +1,6 @@
 'use strict';
 
-const sqlite = require('sqlite3').verbose();
+const sqlite = require('sqlite');
 
 const DBSOURCE ='./db/database.db';
 

@@ -1,33 +1,44 @@
 const express = require('express');
-const carDao = require('./car_dao');
-const userDao = require('./user_dao');
+const dao = require('./car_dao');
 const morgan = require('morgan');
-const jwt = require('express-jwt');
-const jsonwebtoken = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
 
-const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
-const expireTime = 300; 
-const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error'}] };
 
 //create application
-const PORT = 3001;
 app = new express();
+const PORT = 3001;
 
-//Logging
 app.use(morgan('tiny'));
+
 app.use(express.json());
 
+//REST API endpoints
 
 //GET /cars
-app.get('/api/Car', (req, res) => {
-    carDao.getCars()
-    .then((cars) => {
+app.get('/api/cars', (req, res)=> {
+    dao.getCars(req.query.filter).then((cars) => {
         res.json(cars);
     })
     .catch((err) => {
-        res.status(500).json({errors: [{'msg': err}],
+        res.status(500).json({
+            errors: [{'msg': err}],
+        });
     });
+});
+
+//GET /cars/<carId>
+app.get('/api/cars/:carId', (req, res) => {
+    dao.getCar(req.params.carId)
+    .then((course) => {
+        if(!course){
+            res.status(404).send();
+        } else{
+            res.json(course);
+        }
+    })
+    .catch((err) => {
+        res.status(500).json({
+            errors: [{'param': 'Server', 'msg': err}],
+        });
     });
 });
 
